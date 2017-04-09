@@ -1,2 +1,13 @@
 由于时间仓促，有疑问请进QQ群 630773430联系
 或者Email 56731670@qq.com
+
+step 1, use local mysql with 3306 port
+CREATE SCHEMA `regionsampledb1` DEFAULT CHARACTER SET utf8 ;
+
+step2, put the two folders into tomcat webapp using 8080 port
+
+try pages
+http://localhost:8080/RegionFrontend/region-html/sample.html
+http://localhost:8080/RegionFrontend/region-html/dictionary/dictionarylist.html
+http://localhost:8080/RegionFrontend/region-html/dictionary/dictionaryview.html
+http://localhost:8080/RegionFrontend/region-html/dictionary/dictionaryview.html?recordId=1
