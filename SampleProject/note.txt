@@ -1,3 +1,5 @@
+all pages are components in region framework. 
+
 由于时间仓促，有疑问请进QQ群 630773430联系
 或者Email 56731670@qq.com
 
