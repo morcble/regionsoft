@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+		>
+
+	<context:component-scan base-package="cn.regionsoft.sample.persistence"/>	
+	<bean id="mysqlEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName"><value>persistenceUnitSample</value></property>
+  	    <property name="dataSource" ref="mysqlDataSource"></property>
+  		<property name="jpaVendorAdapter">
+  			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+  				<property name="generateDdl" value="false" />
+  				<property name="database" value="MYSQL"></property>
+  			</bean>
+  		</property>
+  		<property name="packagesToScan" >
+        	<array>
+        		<value>cn.regionsoft.sample.persistence.entity</value>
+        	</array>
+        </property>
+        <property name="persistenceProvider">
+            <bean class="org.hibernate.ejb.HibernatePersistence" />
+        </property>
+  		<property name="jpaProperties">
+            <props>
+                <!--out join max fetch depth -->
+                <prop key="hibernate.max_fetch_depth">10</prop>
+                <prop key="hibernate.jdbc.fetch_size">18</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+                <!-- auto create table validate|create|create-drop|update -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <!-- close secondary cache -->
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <prop key="javax.persistence.validation.mode">none</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            </props>
+        </property>
+        <property name="jpaDialect" ref="hibernatejpaDialect"/>
+  	</bean>
+  	
+  	<bean id="hibernatejpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+  	
+  	<jpa:repositories base-package="cn.regionsoft.sample.persistence.dao"  transaction-manager-ref="transactionManager" entity-manager-factory-ref="mysqlEntityManagerFactory"/>
+  	
+  	
+  	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="mysqlEntityManagerFactory"/>
+    </bean>
+  	
+    
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+          <property name="dataSource" ref="mysqlDataSource"></property>
+    </bean>
+
+	<bean id="bauJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+          <property name="dataSource" ref="mysqlDataSource"></property>
+    </bean>
+    
+     <bean id="mysqlDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		
+		<property name="initialSize" value="5"/>   
+		<property name="maxIdle" value="3"/>      
+		<property name="minIdle" value="2"/>       
+		<property name="maxActive" value="10"/>       
+		<property name="removeAbandoned" value="true"/>    
+		<property name="removeAbandonedTimeout" value="180"/>      
+		<property name="maxWait" value="3000"/>    
+		<property name="poolPreparedStatements" value="false"/>  
+        <property name="defaultAutoCommit" value="true"/>  
+        <property name="validationQuery" value="select 1"/> 
+	</bean>
+</beans>

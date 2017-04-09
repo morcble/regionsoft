@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+		>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>  
+	<aop:config proxy-target-class="true">   
+	</aop:config> 
+	<context:component-scan base-package="cn.regionsoft.sample"/>
+	
+	
+	<!-- ========================= GENERAL DEFINITIONS ========================= -->
+
+	<!-- (in this case, mail and JDBC related properties) -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:region_sample/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="i18nMessage" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="defaultEncoding" value="utf-8" />
+        <property name="useCodeAsDefaultMessage" value="true" />  
+        <property name="cacheSeconds" value="10"></property> 
+        <property name="basename">
+        	<value>classpath:region_sample/i18n/messages</value>  
+        </property>
+	</bean>
+	
+	
+	<import resource="classpath*:region_sample/dataAccessContext.xml"/>
+	<!-- <import resource="classpath*:region_sample/dataAccessContextBau.xml"/> -->
+	<import resource="classpath*:region_sample/spring/**/*.xml"/>	
+	
+</beans>

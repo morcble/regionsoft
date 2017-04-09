@@ -1,0 +1,185 @@
+
+<script src="/RegionFrontend/messages/dictionary_msg.js"></script>
+	<div id="region-form" class="hide">
+				<input region-attr="id" class="region-editable" type="hidden">
+				<input region-attr="version" class="region-editable" type="hidden">
+    			
+					<div class="panel panel-default" style="margin-bottom: 0;">
+						<div class="panel-heading">
+						    <i class="fa fa-fw fa-minus fa-lg collapsePanel"></i>
+							<span>Region Form</span>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+									<div class="col-xs-2 data-label-normal">
+										<span class="mandatoryIcon"></span><message key="dictionary_msg.valType"/>:
+									</div> 
+									<div class="col-xs-4">	
+										<input type="text" region-attr="valType" class="form-control region-editable"  maxlength="20">	
+									</div>
+							</div>
+							<div class="row">
+									<div class="col-xs-2 data-label-normal">
+										<span class="mandatoryIcon"></span><message key="dictionary_msg.valTypeDesc"/>:
+									</div> 
+									<div class="col-xs-4">	
+										<input type="text" region-attr="valTypeDesc" class="form-control region-editable"  maxlength="50">
+									</div>
+							</div>
+							
+							<div class="row">
+									<div class="col-xs-2 data-label-normal">
+										<span class="mandatoryIcon"></span><message key="dictionary_msg.city"/>:
+									</div> 
+									<div class="col-xs-4 data-label-multiline">
+										<label class="col-xs-4 data-label-checkbox">	
+										<select class="region-editable form-control" region-attr="city" dataLs="CITY"/>							
+										</select>	
+									</div>
+							</div>
+							
+							<div class="row">
+									<div class="col-xs-2 data-label-normal">
+										<span class="mandatoryIcon"></span><message key="dictionary_msg.province"/>:
+									</div> 
+									<div class="col-xs-4 data-label-multiline">
+											<label class="col-xs-4 data-label-checkbox">
+												<input type="checkbox" class="region-editable" region-attr="province"  dataLs="PROVINCE" multiple="multiple" />							
+											</label>
+									</div>
+							</div>
+							
+							
+												
+							<div class="row">
+								<div class="col-xs-2 data-label-normal">
+									Created Date:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="createDt"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-2 data-label-normal">
+									Created By:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="createBy"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-2 data-label-normal">
+									Update Date:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="updateDt"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-2 data-label-normal">
+									Update By:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="updateBy"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-12 ctrolTr" style="text-align: center; margin-bottom: 15px;">
+									<button class="btn btn-default" onclick="dictionaryview2.refreshRegion(event)">Refresh</button>
+									<button class="btn btn-default" onclick="dictionaryview2.saveRegion(event)">Save</button>
+									<button class="btn btn-default" onclick="dictionaryview2.cancel(event)">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>	
+			
+	<div id="restLoadRegion">
+		<input type="button" value="subChild" onclick="testloadRegion()"/>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	function testloadRegion(){
+		var def = Region.loadRegion($("#restLoadRegion"),"/region-html/dictionary/dictionaryviewcomp.html?recordId=6",null);
+		def.done(function(region){
+			console.log(region)
+		});
+	}
+
+	$(document).ready(function(){ 
+		var formParas = new Array("valType","valTypeDesc");
+		var regArray = new Array(new Array(emptyReg),new Array(emptyReg));
+		var errorMsgArray = new Array(new Array("Mandatory Field"),new Array("Mandatory Field"));
+		var regionForm = new RegionForm("#region-form",formParas,regArray,errorMsgArray,"customizedid");
+		
+		regionForm.resUrl = backendPath+"/zxc/spirit/dictionary/";
+		regionForm.overridenResUrl = null;
+		regionForm.saveSuccessCallBack = dictionaryview2.saveSuccessCallBack;
+		regionForm.saveFailedCallBack = dictionaryview2.saveFailedCallBack;
+			
+		regionForm.beforeRetrieveData = dictionaryview2.beforeRetrieveData;
+		regionForm.afterRetrieveData = dictionaryview2.afterRetrieveData;
+		regionForm.beforeRenderData = dictionaryview2.beforeRenderData;
+		regionForm.afterRenderData = dictionaryview2.afterRenderData;
+		regionForm.beforeValidate = dictionaryview2.beforeValidate;
+		
+		regionForm.renderRegion();
+	});  
+	
+	var dictionaryview2 = {
+			saveRegion:function(event){
+				var tmpRegion = Region.getRegionContainerByEvent(event);
+				tmpRegion.saveOrUpdateRegion();
+			},
+			refreshRegion:function(event){
+				var tmpRegion = Region.getRegionContainerByEvent(event);
+				tmpRegion.refreshRegion();
+			},
+			saveSuccessCallBack:function(){
+				alert("save successfully");
+			},
+			saveFailedCallBack:function(){
+				console.log("save failed");
+			},
+			cancel:function(event){
+				var tmpRegion = Region.getRegionContainerByEvent(event);
+				jqueryConfirm(getMsg("global_msg.cancel_confirm"),
+						function(){
+							console.log("y")
+						},
+						function(){
+							console.log("n")
+						});
+			},
+			/*
+			it will block form data submission if return value is false
+			*/
+			beforeValidate:function(){
+				return true;
+			},
+			beforeRetrieveData:function(){
+				loadingStart();
+			},
+			afterRetrieveData:function(){
+				
+			},
+			beforeRenderData:function(){
+			},
+			afterRenderData:function(){
+				loadingComplete();
+			}
+	}
+	
+	
+	
+</script>
+
+</body>
+</html>
+
