@@ -1,0 +1,5 @@
+http://localhost:8088/RegionSoftSampleFrontend/core/v.html?/raw-comp/dictionary/dictionaryviewcomp.html?recordId=6
+
+http://localhost:8088/RegionSoftSampleFrontend/core/v.html?/raw-comp/example/exampleviewcomp.html?recordId=3631612370518016
+
+uglifyjs regionform.js -p 5 -c -m -o  regionform2.js

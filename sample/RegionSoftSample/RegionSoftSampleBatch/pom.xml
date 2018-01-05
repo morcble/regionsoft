@@ -1,0 +1,190 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cnautosoft.regionsoftsample</groupId>
+    <artifactId>RegionSoftSample</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  <artifactId>RegionSoftSampleBatch</artifactId>
+  <properties>
+		<curator-version>2.7.1</curator-version>
+  </properties>
+  <dependencies>
+		<dependency>
+		  <groupId>com.cnautosoft</groupId>
+		  <artifactId>H2OTrial</artifactId>
+		  <version>0.5.1.1</version>
+		  <scope>system</scope>
+	      <systemPath>${project.basedir}/../lib/H2OTrial-0.5.1.1.jar</systemPath>
+		</dependency>
+		<dependency>
+		  <groupId>com.cnautosoft.regionsoftsample</groupId>
+		  <artifactId>RegionSoftSampleCommon</artifactId>
+		  <version>0.0.1</version>
+		</dependency>
+	  	<dependency>
+	  		<groupId>com.cnautosoft.regionsoftsample</groupId>
+		    <artifactId>RegionSoftSampleClient</artifactId>
+		    <version>0.0.1</version>
+	  	</dependency>
+	  	
+<!-- H2O dependency begin -->
+
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.20.1</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+	
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.32</version>
+		</dependency>
+	
+	
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+	
+	
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+	
+		<!-- Netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.24.Final</version>
+		</dependency>
+		<!-- Protostuff -->
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-core</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-runtime</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<!-- Objenesis -->
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<!-- ZooKeeper -->
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>${curator-version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>${curator-version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-test</artifactId>
+			<version>${curator-version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-x-discovery</artifactId>
+			<version>${curator-version}</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-x-discovery-server</artifactId>
+			<version>${curator-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.23</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.auth0</groupId>
+		    <artifactId>java-jwt</artifactId>
+		    <version>3.3.0</version>
+		</dependency>
+
+<!-- H2O dependency end -->
+  </dependencies>
+
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.cnautosoft.regionsoftsample</groupId>
+									<artifactId>RegionSoftSampleBatch</artifactId>
+									<version>0.0.1</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>../binaries/</outputDirectory>
+									<destFileName>RegionSoftSampleBatch.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>  
+			       <groupId>org.apache.maven.plugins</groupId>  
+			       <artifactId>maven-war-plugin</artifactId>  
+			            <configuration>  
+			                <webResources>  
+			                    <resource>  
+			                        <directory>${project.basedir.parent}/lib</directory>  
+			                        <targetPath>WEB-INF/lib</targetPath>  
+			                       <!--  <filtering>true</filtering>   -->
+			                        <includes>  
+			                            <include>**/*.jar</include>  
+			                        </includes>  
+			                    </resource>  
+			                </webResources>  
+			            </configuration>  
+			 </plugin>
+		</plugins>
+	</build>
+  
+</project>

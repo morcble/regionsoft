@@ -1,0 +1,1 @@
+CREATE SCHEMA regionsoftsampledb DEFAULT CHARACTER SET utf8 ;

@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cnautosoft.regionsoftsample</groupId>
+    <artifactId>RegionSoftSample</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  <artifactId>RegionSoftSampleFrontend</artifactId>
+  <packaging>war</packaging>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.cnautosoft.regionsoftsample</groupId>
+									<artifactId>RegionSoftSampleFrontend</artifactId>
+									<version>0.0.1</version>
+									<type>war</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>../binaries/</outputDirectory>
+									<destFileName>RegionSoftSampleFrontend.war</destFileName>
+								</artifactItem>
+							</artifactItems>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

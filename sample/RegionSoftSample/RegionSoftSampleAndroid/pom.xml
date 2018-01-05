@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cnautosoft.regionsoftsample</groupId>
+    <artifactId>RegionSoftSample</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  <artifactId>RegionSoftSampleAndroid</artifactId>
+  <dependencies>
+  		<dependency>
+		  <groupId>com.cnautosoft</groupId>
+		  <artifactId>H2OTrial</artifactId>
+		  <version>0.5.1.1</version>
+		  <scope>system</scope>
+	      <systemPath>${project.basedir}/../lib/H2OTrial-0.5.1.1.jar</systemPath>
+		</dependency>
+  </dependencies>
+</project>

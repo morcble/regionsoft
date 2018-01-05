@@ -1,0 +1,37 @@
+<style type="text/css">
+.REGION_content{
+	padding-top:3px;
+}
+
+</style>
+
+<div id="REGION" class="hidden">
+	<div class="REGION_content">
+		<div class="col-xs-6" id="groupuser">
+		
+		</div>
+		<div class="col-xs-6" id="groupres">
+		
+		</div>
+	</div>
+</div>	
+
+
+<script type="text/javascript">
+var REGION = {
+		renderContent:function(){
+			var systemId = this.paraMap.get("systemId");
+			var groupId = this.paraMap.get("groupId");
+			var def = RegionUtil.loadRegion($("#groupuser"),"/comp/admin/grouptousermap/grouptousermaplist.html?systemId="+systemId+"&groupId="+groupId,"groupuser");
+			
+			var def = RegionUtil.loadRegion($("#groupres"),"/comp/admin/grouptoresmap/grouptoresmaplist.html?systemId="+systemId+"&groupId="+groupId,"groupres");
+		}
+};
+
+
+RegionUtil.ready(function(){
+	var staticRegion = new StaticRegion("#REGION");
+	staticRegion.afterRenderData = REGION.renderContent;
+	staticRegion.renderRegion();
+})
+

@@ -1,0 +1,138 @@
+<div id="REGION" class="hidden">
+	<div class="panel panel-info">
+			<div class="panel-heading">
+				<i class="fa fa-fw fa-minus fa-lg collapsePanel"></i>
+				<span>RemoteSample列表</span>
+			</div>
+			<div class="loadingIcon  text-center"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
+			<div class="panel-body">
+				<div>
+		 			<button class="btn btn-default regionSearchPrompt">
+						<message key="global_msg.search"></message>
+					</button>
+					<button class="btn btn-default regionNewBtn">
+						<message key="global_msg.add"></message>
+						<!-- <input type="hidden" class="parameter"  paraName="paraName" region-attr="valType"> -->
+					</button>
+				</div>
+				
+				<div class="panel panel-default region-search-div hidden">
+						<div class="panel-body">
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="remotesample_msg.remoteName"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="remoteName" class="form-control region-searchable"  maxlength="20">
+									</div>
+								</div>
+							</div>
+					
+							<div class="row">
+								<div class="center-block">
+			      					<button class="btn btn-default regionSearchBtn"><message key="global_msg.submit"></message></button>&nbsp;
+									<button class="btn btn-default regionResetBtn"><message key="global_msg.reset"></message></button>
+		   						</div>
+							</div>
+						</div>
+					</div>
+		
+	
+		
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="margin-bottom">
+								<table class="table table-striped table-bordered table-hover table-normal">
+									<thead>
+										<tr>
+											<th><input class="selectAll" type='checkbox' /></th>
+											<th><message key="global_msg.index"></message></th>
+											<th><message key="remotesample_msg.remoteName"></message></th>
+											<th region-order="createDt"><message key="global_msg.create_dt"></message></th>
+											<th><message key="global_msg.create_by"></message></th>
+											<th region-order="updateDt"><message key="global_msg.update_dt"></message></th>
+											<th><message key="global_msg.update_by"></message></th>
+											<th><message key="global_msg.operation"></message></th>
+										</tr>
+									</thead>
+									<tbody region-list="list">
+										<tr class="hidden">
+											<td><input type="checkbox" class="multipleCbs"/></td>
+											<td><span region-attr="index"></span></td>
+											<td><span region-attr="remoteName"></span></td>
+											<td><span region-attr="createDt"></span</td>
+											<td><span region-attr="createBy"></span></td>
+											<td><span region-attr="updateDt"></span></td>
+											<td><span region-attr="updateBy"></span></td>
+											<td>
+												<a href="javascript:void(0)" onclick="RegionUtil.handleListData(REGION.viewData,event)"><i class="fa fa-pencil fa-fw" title="Edit"></i></a>
+												&nbsp;
+												<a href="javascript:void(0)"  onclick="RegionUtil.handleListData(REGION.deleteData,event)"><i class="fa fa-trash-o fa-fw" title="Delete"></i></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						
+							<div>
+								<button class="btn btn-default regionBatchDelBtn hidden"><message key="global_msg.batch_delete"></message></button>
+							</div>
+							
+							<div class="paginationControl"></div>
+							
+							<div class="norecordmsg hidden"><message key="global_msg.no_record_found"></message></div>
+						</div>
+					</div>
+			</div>	
+	</div>
+</div>	
+
+<script type="text/javascript">
+var REGION = {
+		viewData :function (rowData){
+			this.viewRecord(rowData,this.regionId);
+		},
+		deleteData:function(rowData){
+			this.deleteData(rowData);
+		},
+		/*
+		it will block form submission if return false
+		*/
+		beforeValidate:function(){
+			return true;
+		},
+		afterValidate:function(){
+		}
+
+}
+
+
+RegionUtil.ready(function(){
+	var task = RegionUtil.loadMessage("/messages"+Config.LOCALE+"/remotesample_msg.js");
+	task.done(function(){
+		var tmpGrid = new RegionGrid("#REGION");
+		//tmpGrid.addValidator("remoteName",new Array(emptyReg),new Array("必填字段"));
+		tmpGrid.listRes = "/regionsoftsample/remotesample/list";
+			
+		tmpGrid.addTitle = "新增RemoteSample";//view title
+		tmpGrid.viewTitle = "编辑RemoteSample";//view title
+		tmpGrid.popupSize = "large";
+		tmpGrid.reqRes = "/comp/remotesample/remotesampleview.html";
+		tmpGrid.beforeRetrieveData = null;
+		tmpGrid.afterRetrieveData = null;
+		tmpGrid.beforeRenderData = null;
+		tmpGrid.afterRenderData = null;
+		tmpGrid.beforeValidate = REGION.beforeValidate;
+		tmpGrid.afterValidate = REGION.afterValidate;
+		tmpGrid.deleteCallBack = null;
+		tmpGrid.search();		
+	});
+	
+	
+});
+
+</script>
+
+
+

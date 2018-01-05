@@ -1,0 +1,40 @@
+<style type="text/css">
+.REGION_componentBtn{
+ font-size:20px
+}
+
+</style>
+
+<div id="REGION" class="hidden">
+	<div class="REGION_componentBtn">
+				<input type="button" value="localsample" class="previewBtn btn btn-default">
+		<input type="button" value="remotesample" class="previewBtn btn btn-default">
+	</div>
+
+
+
+	<div class="componentPreview">
+		<div></div>
+	</div>	
+</div>	
+
+
+<script type="text/javascript">
+var REGION = {
+		renderContent:function(){
+			var region = this;
+			this.find(".previewBtn").each(function(){
+				$(this).click(function(){
+					RegionUtil.loadRegion(region.find(".componentPreview").children().eq(0),"/comp/"+this.value+"/"+this.value+"list.html","preview");
+				})
+			});
+		}
+};
+
+
+RegionUtil.ready(function(){
+	var staticRegion = new StaticRegion("#REGION",null);
+	staticRegion.afterRenderData = REGION.renderContent;
+	staticRegion.renderRegion();
+})
+

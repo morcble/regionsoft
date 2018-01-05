@@ -1,0 +1,153 @@
+<div id="REGION" class="hidden">
+	<div class="panel panel-info">
+			<div class="panel-heading">
+				<i class="fa fa-fw fa-minus fa-lg collapsePanel"></i>
+				<span>ErrorLog列表</span>
+			</div>
+			<div class="loadingIcon  text-center"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
+			<div class="panel-body">
+				<div>
+		 			<button class="btn btn-default regionSearchPrompt">
+						<message key="global_msg.search"></message>
+					</button>
+				</div>
+				
+				<div class="panel panel-default region-search-div hidden">
+						<div class="panel-body">
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="errorlog_msg.systemId"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="systemId" class="form-control region-searchable"  maxlength="20">
+									</div>
+								</div>
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="errorlog_msg.requestId"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="requestId" class="form-control region-searchable"  maxlength="50">
+									</div>
+								</div>
+							</div>
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="errorlog_msg.errorType"></message>
+									</div>
+									<div class="col-xs-8">
+										<select class="region-searchable form-control" region-attr="errorType" region-ds="ErrorType"><option value="">请选择</option></select>
+									</div>
+								</div>
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="errorlog_msg.detail"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="detail" class="form-control region-searchable">
+									</div>
+								</div>
+							</div>
+					
+							<div class="row">
+								<div class="center-block">
+			      					<button class="btn btn-default regionSearchBtn"><message key="global_msg.submit"></message></button>&nbsp;
+									<button class="btn btn-default regionResetBtn"><message key="global_msg.reset"></message></button>
+		   						</div>
+							</div>
+						</div>
+					</div>
+		
+	
+		
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="margin-bottom">
+								<table class="table table-striped table-bordered table-hover table-normal" style="table-layout:fixed">
+									<thead>
+										<tr>
+											<th width="3%"><message key="global_msg.index"></message></th>
+											<th width="5%"><message key="errorlog_msg.systemId"></message></th>
+											<th width="10%"><message key="errorlog_msg.requestId"></message></th>
+											<th width="5%"><message key="errorlog_msg.errorType"></message></th>
+											<th><message key="errorlog_msg.detail"></message></th>
+											<th width="8%" region-order="createDt"><message key="global_msg.create_dt"></message></th>
+											<th width="6%"><message key="global_msg.create_by"></message></th>
+										
+										</tr>
+									</thead>
+									<tbody region-list="list">
+										<tr class="hidden">
+											<td><span region-attr="index"></span></td>
+											<td><span region-attr="systemId"></span></td>
+											<td><span region-attr="requestId"></span></td>
+											<td><span region-attr="errorType" region-ds="ErrorType"></span></td>
+											<td><span region-attr="detail"></span><a href="javascript:void(0)" onclick="RegionUtil.handleListData(REGION.viewData,event)"><i class="fa fa-eye fa-fw" title="查看详细"></i></a></td>
+											<td><span region-attr="createDt"></span</td>
+											<td><span region-attr="createBy"></span></td>
+											
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<div class="paginationControl"></div>
+							
+							<div class="norecordmsg hidden"><message key="global_msg.no_record_found"></message></div>
+						</div>
+					</div>
+			</div>	
+	</div>
+</div>	
+
+<script type="text/javascript">
+var REGION = {
+		viewData :function (rowData){
+			this.viewRecord(rowData,this.regionId);
+		},
+		deleteData:function(rowData){
+			this.deleteData(rowData);
+		},
+		/*
+		it will block form submission if return false
+		*/
+		beforeValidate:function(){
+			return true;
+		},
+		afterValidate:function(){
+		}
+
+}
+
+
+RegionUtil.ready(function(){
+	var task = RegionUtil.loadMessage("/messages"+Config.LOCALE+"/errorlog_msg.js");
+	task.done(function(){
+		var tmpGrid = new RegionGrid("#REGION");
+		//tmpGrid.addValidator("systemId",new Array(emptyReg),new Array("必填字段"));
+		//tmpGrid.addValidator("errorType",new Array(emptyReg),new Array("必填字段"));
+		tmpGrid.listRes = "/admin/errorlog/list";
+			
+		tmpGrid.addTitle = "新增ErrorLog";//view title
+		tmpGrid.viewTitle = "编辑ErrorLog";//view title
+		tmpGrid.popupSize = "large";
+		tmpGrid.reqRes = "/comp/admin/errorlog/errorlogview.html";
+		tmpGrid.beforeRetrieveData = null;
+		tmpGrid.afterRetrieveData = null;
+		tmpGrid.beforeRenderData = null;
+		tmpGrid.afterRenderData = null;
+		tmpGrid.beforeValidate = REGION.beforeValidate;
+		tmpGrid.afterValidate = REGION.afterValidate;
+		tmpGrid.deleteCallBack = null;
+		tmpGrid.search();		
+	});
+	
+	
+});
+
+</script>
+
+
+

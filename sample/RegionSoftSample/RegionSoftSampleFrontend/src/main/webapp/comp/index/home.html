@@ -1,0 +1,74 @@
+<style type="text/css">
+.REGION_intro-item{
+	padding-right: 60px;
+	padding-left: 60px;
+}
+
+.REGION_intro-item h1{
+	border-bottom:1px solid #eee;
+}
+</style>
+<div id="REGION" class="hidden container-fluid col-xs-12"> 
+	<div class="jumbotron">
+		<p></p>
+		<h1>Region Soft Bundle</h1>
+		<ul>
+			<li>加速开发网站,移动应用及微服务的框架和工具的集合</li>
+			<li>在线定义模块，自动生成可运行的前后端分离的代码</li>
+			<li>一套代码可以零修改跨平台使用</li>
+		</ul>
+	</div>
+	
+	<div class="REGION_intro-item"> 
+		<h1>后端框架 H2O</h1>
+		<ul>
+			<li>依赖注入式后端框架</li>
+			<li>可声明多Context实例，可互相调用，降低模块耦合度</li>
+			<li>兼容Spring注解名，减少学习时间</li>
+			<li>注解式持久层，简单高效</li>
+			<li>基于RPC的声明式微服务，提高系统扩展性</li>
+			<li>尽可能少的开源框架依赖</li>
+		</ul>
+	</div>
+	
+	<div class="REGION_intro-item">
+		<h1>前端框架 RegionJs</h1>
+		<ul>
+			<li>基于JQuery的前端组件式框架</li>
+			<li>前端页面模块解耦化，组件化，易于开发维护</li>
+			<li>使用简单，容易掌握</li>
+			<li>兼容IE8及通用浏览器</li>
+		</ul>
+	</div>
+	
+	<div class="REGION_intro-item">
+		<h1>代码生成器 Soil</h1>
+		<ul>
+			<li>读取模块配置，自动生成可以运行的模块代码</li>
+			<li>生成由H2O 和 RegionJs 组成的全栈代码</li>
+			<li>自带增删查改分页功能，极大减少工作量</li>
+			<li>页面组件化，耦合度极低</li>
+		</ul>
+	 </div>
+	 
+	 <div>
+	 	<blockquote class="blockquote-reverse">
+	      <p>Powered by Morcble 2017-11-28</p>
+	      <footer>让Coding更简单</footer>
+	    </blockquote>
+	 
+	 </div>
+	
+</div>	
+
+<script type="text/javascript">
+var REGION = {
+
+}
+
+RegionUtil.ready(function(){
+	var staticRegion = new StaticRegion("#REGION");
+	
+	staticRegion.renderRegion();
+})
+</script>

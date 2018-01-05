@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>webapp.RegionSoftSampleLocalService</param-value>
+	</context-param>
+	<listener>
+	    <listener-class>com.cnautosoft.h2o.core.dispatcher.H2OContextListener</listener-class>
+	</listener>
+    
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>com.cnautosoft.h2o.core.webfilter.RegionEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    
+    <filter>
+        <filter-name>crossDomainFilter</filter-name>
+        <filter-class>com.cnautosoft.h2o.core.webfilter.CrossDomainFilter</filter-class>
+    </filter>
+
+    
+    <filter-mapping>
+    	<filter-name>encodingFilter</filter-name>
+        <url-pattern>/region/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>crossDomainFilter</filter-name>
+        <url-pattern>/region/*</url-pattern>
+    </filter-mapping>
+	
+	<servlet>
+        <servlet-name>RegionWebDispatcher</servlet-name>
+        <servlet-class>com.cnautosoft.h2o.core.dispatcher.RegionWebDispatcher
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RegionWebDispatcher</servlet-name>
+        <url-pattern>/region/*</url-pattern>
+    </servlet-mapping>
+	
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

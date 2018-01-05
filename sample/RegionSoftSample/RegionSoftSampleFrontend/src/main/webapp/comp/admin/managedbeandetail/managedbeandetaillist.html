@@ -1,0 +1,200 @@
+<div id="REGION" class="hidden">
+	<div class="panel panel-info">
+			<div class="panel-heading">
+				<i class="fa fa-fw fa-minus fa-lg collapsePanel"></i>
+				<span>容器管理的实例列表</span>
+			</div>
+			<div class="loadingIcon  text-center"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
+			<div class="panel-body">
+				<div>
+		 			<button class="btn btn-default regionSearchPrompt">
+						<message key="global_msg.search"></message>
+					</button>
+					<button class="btn btn-default resScanBtn">
+						<message key="global_msg.resource_scan"></message>
+					</button>
+				</div>
+				
+				<div class="panel panel-default region-search-div hidden">
+						<div class="panel-body">
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="managedbeandetail_msg.systemId"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="systemId" class="form-control region-searchable"  maxlength="20">
+									</div>
+								</div>
+							</div>
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="managedbeandetail_msg.contextName"></message>
+									</div>
+									<div class="col-xs-8">
+										<select class="region-searchable form-control" region-attr="contextName" region-ds="attachedObj" optionLabel="description" optionValue="val"><option value="">请选择</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="managedbeandetail_msg.beanType"></message>
+									</div>
+									<div class="col-xs-8">
+										<select class="region-searchable form-control" region-attr="beanType" region-ds="BeanType"><option value="">请选择</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="managedbeandetail_msg.name"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="name" class="form-control region-searchable"  maxlength="50">
+									</div>
+								</div>
+							</div>
+							<div class="row margin-bottom-15px">
+								<div class="col-xs-6 flex-center">
+									<div class="col-xs-4">
+										<message key="managedbeandetail_msg.packageName"></message>
+									</div>
+									<div class="col-xs-8">
+										<input type="text" region-attr="packageName" class="form-control region-searchable"  maxlength="100">
+									</div>
+								</div>
+							</div>
+							
+					
+							<div class="row">
+								<div class="center-block">
+			      					<button class="btn btn-default regionSearchBtn"><message key="global_msg.submit"></message></button>&nbsp;
+									<button class="btn btn-default regionResetBtn"><message key="global_msg.reset"></message></button>
+		   						</div>
+							</div>
+						</div>
+					</div>
+		
+	
+		
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="margin-bottom">
+								<table class="table table-striped table-bordered table-hover table-normal">
+									<thead>
+										<tr>
+											<th><message key="global_msg.index"></message></th>
+											<th><message key="managedbeandetail_msg.systemId"></message></th>
+											<th><message key="managedbeandetail_msg.contextName"></message></th>
+											<th><message key="managedbeandetail_msg.name"></message></th>
+											<th><message key="managedbeandetail_msg.packageName"></message></th>
+											<th><message key="managedbeandetail_msg.beanType"></message></th>
+											<th><message key="global_msg.update_dt"></message></th>
+											<th><message key="global_msg.operation"></message></th>
+										</tr>
+									</thead>
+									<tbody region-list="list">
+										<tr class="hidden">
+											<td><span region-attr="index"></span></td>
+											<td><span region-attr="systemId"></span></td>
+											<td><span region-attr="contextName"></span></td>
+											<td><span region-attr="name"></span></td>
+											<td><span region-attr="packageName"></span></td>
+											<td><span region-attr="beanType"></span></td>
+											<td><span region-attr="updateDt"></span></td>
+											<td>
+												<a href="javascript:void(0)" onclick="RegionUtil.handleListData(REGION.viewDetail,event)"><i class="fa fa-eye fa-fw" title="查看详细"></i></a>
+												
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+							<div class="paginationControl"></div>
+							
+							<div class="norecordmsg hidden"><message key="global_msg.no_record_found"></message></div>
+						</div>
+					</div>
+			</div>	
+	</div>
+</div>	
+
+<script type="text/javascript">
+var REGION = {
+		viewDetail :function (rowData){
+			var paraMap  = new HashMap();
+			paraMap.put("detailId",rowData.id);
+			paraMap.put("beanType",rowData.beanType);
+			this.viewRecord(rowData,null,paraMap,"/comp/admin/managedbeandetail/methodinfolist.html",rowData.name);
+		},
+		deleteData:function(rowData){
+			this.deleteData(rowData);
+		},
+		/*
+		it will block form submission if return false
+		*/
+		beforeValidate:function(){
+			return true;
+		},
+		afterValidate:function(){
+		},
+		resScan:function(event){
+			var tmpRegion = RegionUtil.getRegionByEvent(event);
+			var systemId = tmpRegion.paraMap.get("systemId");
+			
+			var reqObj = new Object();
+			reqObj.systemId = systemId;
+			CoverPlugin.loadingStart();
+			RegionUtil.ajaxJsonTask(Config.backendPath+"/admin/managedbeandetail/scanmanagedbeans","POST",reqObj,function(data,dataPara){
+				RegionUtil.alert("更新完毕");
+				CoverPlugin.loadingComplete();
+				tmpRegion.refreshRegion();
+			})
+		}
+
+}
+
+
+RegionUtil.ready(function(){
+	var task = RegionUtil.loadMessage("/messages"+Config.LOCALE+"/managedbeandetail_msg.js");
+	task.done(function(){
+		var tmpGrid = new RegionGrid("#REGION");
+		//tmpGrid.addValidator("systemId",new Array(emptyReg),new Array("必填字段"));
+		//tmpGrid.addValidator("contextName",new Array(emptyReg),new Array("必填字段"));
+		//tmpGrid.addValidator("name",new Array(emptyReg),new Array("必填字段"));
+		//tmpGrid.addValidator("packageName",new Array(emptyReg),new Array("必填字段"));
+		//tmpGrid.addValidator("beanType",new Array(emptyReg),new Array("必填字段"));
+		//tmpGrid.addValidator("svcType",new Array(emptyReg),new Array("必填字段"));
+		tmpGrid.listRes = "/admin/managedbeandetail/list";
+			
+		tmpGrid.addTitle = "新增ManagedBeanDetail";//view title
+		tmpGrid.viewTitle = "编辑ManagedBeanDetail";//view title
+		tmpGrid.popupSize = "large";
+		tmpGrid.reqRes = "/comp/managedbeandetail/managedbeandetailview.html";
+		tmpGrid.beforeRetrieveData = null;
+		tmpGrid.afterRetrieveData = null;
+		tmpGrid.beforeRenderData = null;
+		tmpGrid.afterRenderData = null;
+		tmpGrid.beforeValidate = REGION.beforeValidate;
+		tmpGrid.afterValidate = REGION.afterValidate;
+		tmpGrid.deleteCallBack = null;
+		tmpGrid.search();
+		
+		tmpGrid.find(".resScanBtn").click(function(event){
+			REGION.resScan(event);
+		});
+	});
+	
+	
+});
+
+</script>
+
+
+

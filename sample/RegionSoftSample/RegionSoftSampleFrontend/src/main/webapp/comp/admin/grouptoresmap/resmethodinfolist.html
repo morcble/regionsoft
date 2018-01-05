@@ -1,0 +1,140 @@
+<div id="REGION" class="hidden">
+	<div class="panel panel-info">
+			<div class="panel-heading">
+				<i class="fa fa-fw fa-minus fa-lg collapsePanel"></i>
+				<span>方法列表</span>
+			</div>
+			<div class="loadingIcon  text-center"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
+			<div class="panel-body">
+					<input type="hidden" region-attr="groupId" class="form-control region-searchable">
+					<input type="hidden" region-attr="detailId" class="form-control region-searchable">
+		
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="margin-bottom">
+								<table class="table table-striped table-bordered table-hover table-normal">
+									<thead>
+										<tr>
+											<th><input class="selectAll" type='checkbox'/></th>
+											<th width="5%"><message key="global_msg.index"></message></th>
+											<th region-hide="hide = (paraMap.get('beanType')!='Controller')"><message key="methodinfo_msg.url"></message></th>
+											<th width="10%"><message key="methodinfo_msg.name"></message></th>
+											<!-- <th width="100px"><message key="global_msg.operation"></message></th> -->
+										</tr>
+									</thead>
+									<tbody region-list="list">
+										<tr class="hidden">
+											<td><input type="checkbox" class="multipleCbs" region-attr="chosen" value="1"/></td>
+											<td><span region-attr="index"></span></td>
+											<td region-hide="hide = (paraMap.get('beanType')!='Controller')"><span region-attr="url"></span></td>
+											<td><span region-attr="name"></span></td>
+											<!-- <td>
+												<a region-hide="hide = (rowData.chosen=='1')" href="javascript:void(0)" onclick="RegionUtil.handleListData(REGION.chooseRes,event)"><i class="fa fa-plus fa-fw" title="增加"></i></a>
+												<a region-hide="hide = (rowData.chosen=='0')" href="javascript:void(0)" onclick="RegionUtil.handleListData(REGION.chooseRes,event)"><i class="fa fa-minus fa-fw" title="去掉"></i></a>
+											</td> -->
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+							<div>
+								<button class="btn btn-default batchChooseBtn"><label class="messagelabel">更改资源授权</label></button>
+							</div>
+							
+							<div class="norecordmsg hidden"><message key="global_msg.no_record_found"></message></div>
+						</div>
+					</div>
+			</div>	
+	</div>
+</div>	
+
+<script type="text/javascript">
+var REGION = {
+		viewData :function (rowData){
+			this.viewRecord(rowData,this.regionId);
+		},
+		deleteData:function(rowData){
+			this.deleteData(rowData);
+		},
+		/*
+		it will block form submission if return false
+		*/
+		beforeValidate:function(){
+			return true;
+		},
+		afterValidate:function(){
+		},
+		batchChoose:function(event){
+			var region = RegionUtil.getRegionByEvent(event);
+			var systemId = region.paraMap.get("systemId");
+			var detailId = region.paraMap.get("detailId");
+			var groupId = region.paraMap.get("groupId");
+			var parentRegionId = region.paraMap.get("parentRegionId");
+			var currRegionId = region.regionId;
+			
+			var regionDivObj= region.getRegionDivElem();
+			var multipleCbs =  $(regionDivObj).find(".region-list").find(".multipleCbs");
+			
+			var hasItem = false;
+			var listData = region.regionData.list;
+			
+			var reqArray = new Array();
+			$.each(multipleCbs, function(i, item){
+				 if(item.checked){
+					 hasItem = true;
+					 var indexNo = $(item).closest("*[index]").attr("index");
+					 var rowData = listData[indexNo];
+					
+					 var reqObj = new Object();
+					 reqObj.resource = rowData.url;
+					 reqObj.systemId = systemId;
+					 reqObj.groupId = groupId;
+					 reqObj.detailIdStr = rowData.detailId;
+					 reqArray.push(reqObj);
+				 }
+			});
+			 
+			if(!hasItem){
+				 var reqObj = new Object();
+				 reqObj.resource = "-1";
+				 reqObj.systemId = systemId;
+				 reqObj.groupId = groupId;
+				 reqObj.detailIdStr = detailId;
+				 reqArray.push(reqObj);
+				 
+			}
+			CoverPlugin.loadingStart();
+			REGION.sendAddUserRequest(reqArray,currRegionId);
+		},
+		sendAddUserRequest:function(reqObj,currRegionId){
+			RegionUtil.ajaxJsonTask(Config.backendPath+"/admin/grouptoresmap/changegroupres","POST",reqObj,function(data,dataPara){
+				RegionUtil.alert("修改成功");
+				CoverPlugin.loadingComplete();
+				var region = RegionUtil.getRegionById(currRegionId);
+				console.log(region)
+				region.refreshRegion();
+			})
+		}
+
+}
+
+
+RegionUtil.ready(function(){
+	var task = RegionUtil.loadMessage("/messages"+Config.LOCALE+"/methodinfo_msg.js");
+	task.done(function(){
+		var tmpGrid = new RegionGrid("#REGION");
+		tmpGrid.listRes = "/admin/methodinfo/configlist";
+		tmpGrid.search();		
+		
+		tmpGrid.find(".batchChooseBtn").click(function(event){
+			REGION.batchChoose(event);
+		});
+	});
+	
+	
+});
+
+</script>
+
+
+

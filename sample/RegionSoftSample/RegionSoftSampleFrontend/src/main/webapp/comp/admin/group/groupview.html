@@ -1,0 +1,166 @@
+<div id="REGION" class="hidden"> 
+				<input region-attr="id" class="region-editable" type="hidden">
+				<input region-attr="version" class="region-editable" type="hidden">
+
+				<div class="panel panel-info">
+					<div class="panel-heading">
+					    <i class="fa fa-fw fa-minus fa-lg collapsePanel"></i>
+						<span>Group详细</span>
+					</div> 
+					<div class="loadingIcon  text-center"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
+					<div class="panel-body">
+						<div class="row">
+								<div class="col-xs-2">
+									<span class="mandatoryIcon"></span><message key="group_msg.systemId"></message>:
+								</div> 
+								<div class="col-xs-4">
+									<input type="text" region-attr="systemId" class="form-control region-editable"  maxlength="20" readonly></input>
+								</div>
+						</div>
+						<div class="row">
+								<div class="col-xs-2">
+									<span class="mandatoryIcon"></span><message key="group_msg.groupNm"></message>:
+								</div> 
+								<div class="col-xs-4">	
+									<input type="text" region-attr="groupNm" class="form-control region-editable"  maxlength="20">
+								</div>
+						</div>
+						<div class="row">
+								<div class="col-xs-2">
+									<message key="group_msg.groupDesc"></message>:
+								</div> 
+								<div class="col-xs-4">	
+									<input type="text" region-attr="groupDesc" class="form-control region-editable"  maxlength="50">
+								</div>
+						</div>
+						<input type="hidden" region-attr="parentGroupId" class="form-control region-editable">
+						
+							<div class="row">
+								<div class="col-xs-2">
+									<message key="global_msg.create_dt"></message>:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="createDt"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-2">
+									<message key="global_msg.create_by"></message>:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="createBy"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-2">
+									<message key="global_msg.update_dt"></message>:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="updateDt"></span>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-2">
+									<message key="global_msg.update_by"></message>:
+								</div>
+								<div class="col-xs-4">
+									<span region-attr="updateBy"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<button class="btn btn-default" onclick="REGION.refreshRegion(event)"><message key="global_msg.refresh"></message></button>
+									<button class="btn btn-default" onclick="REGION.saveRegion(event)"><message key="global_msg.save"></message></button>
+									<button class="btn btn-default" onclick="REGION.reset(event)"><message key="global_msg.reset"></message></button>
+								</div>
+							</div>
+						</div>
+				</div>	
+
+</div>
+ 
+
+
+<script type="text/javascript">
+var REGION = {
+		saveRegion:function(event){
+			var tmpRegion = RegionUtil.getRegionByEvent(event);
+			tmpRegion.saveOrUpdateRegion();
+		},
+		refreshRegion:function(event){
+			var tmpRegion = RegionUtil.getRegionByEvent(event);
+			tmpRegion.refreshRegion();
+		},
+		saveSuccessCallBack:function(){
+			if(parent!=null){
+				try{
+					RegionUtil.alert("保存成功");
+					if(this.isPopup()){
+						RegionUtil.getWindowRegionById(parent.window,this.paraMap.get("refreshRegionId")).refreshRegion();
+						parent.closeModalWindow();
+					}
+				}catch(e){
+					console.log(e)
+				}
+			}
+		},
+		saveFailedCallBack:function(){
+			console.log("save failed");
+		},
+		reset:function(event){
+			var tmpRegion = RegionUtil.getRegionByEvent(event);
+			if(confirm(getMsg("global_msg.reset_confirm"))){
+				tmpRegion.reset();
+			}
+			
+		},
+		/*
+		it will block form submission if return false
+		*/
+		beforeValidate:function(){
+			return true;
+		},
+		afterValidate:function(){
+		},
+		beforeRetrieveData:function(){
+			
+		},
+		afterRenderData:function(){
+			if(this.paraMap.get("systemId")!=null&&this.paraMap.get("systemId").trim()!=""){
+				this.geObjByRegionAttri("systemId").attr("disabled",true);
+				
+			}
+			this.setSystemId("LOCAL");
+		}
+}
+
+RegionUtil.ready(function(){
+	var task = RegionUtil.loadMessage("/messages"+Config.LOCALE+"/group_msg.js");
+	task.done(function(){
+		var regionForm = new RegionForm("#REGION");
+		regionForm.dataIdPara = "recordId";
+		regionForm.addValidator("systemId",new Array(emptyReg),new Array("必填字段"));
+		regionForm.addValidator("groupNm",new Array(emptyReg),new Array("必填字段"));
+		regionForm.resUrl = Config.backendPath+"/admin/group/";
+		regionForm.saveSuccessCallBack = REGION.saveSuccessCallBack;
+		regionForm.saveFailedCallBack = REGION.saveFailedCallBack;
+			
+		regionForm.beforeRetrieveData = REGION.beforeRetrieveData;
+		regionForm.afterRetrieveData = null;
+		regionForm.beforeRenderData = null;
+		regionForm.afterRenderData = REGION.afterRenderData;
+		regionForm.beforeValidate = REGION.beforeValidate;
+		regionForm.afterValidate = REGION.afterValidate;
+		
+		regionForm.renderRegion();
+	});
+		
+});  
+</script>
+
+
+
+
