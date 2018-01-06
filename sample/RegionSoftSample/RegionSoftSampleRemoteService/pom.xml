@@ -20,6 +20,14 @@
 		</dependency>
 		
 		<dependency>
+		  <groupId>com.cnautosoft</groupId>
+		  <artifactId>H2OExt</artifactId>
+		  <version>0.5.1.1</version>
+		  <scope>system</scope>
+	      <systemPath>${project.basedir}/../lib/H2OExt-0.5.1.1.jar</systemPath>
+		</dependency>
+		
+		<dependency>
 		    <groupId>com.auth0</groupId>
 		    <artifactId>java-jwt</artifactId>
 		    <version>3.3.0</version>

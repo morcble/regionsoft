@@ -15,7 +15,7 @@
 		
 		var jsDependencies = [
 		               Config.frontendPath+"/core/common/jquery-1.12.2.min.js",
-		               Config.frontendPath+"/core/common/regionsoft-0.5.1.1.release.js",
+		               Config.frontendPath+"/core/common/regionbundle-0.5.1.1.release.js",
 		               Config.frontendPath+"/core/common/pako.min.js",
 		               Config.frontendPath+"/messages/global_msg.js",
 		               Config.frontendPath+"/core/datals.js",
