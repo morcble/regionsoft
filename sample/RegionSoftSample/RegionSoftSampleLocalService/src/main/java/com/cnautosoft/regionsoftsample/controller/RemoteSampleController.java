@@ -31,8 +31,8 @@ import com.cnautosoft.regionsoftsample.resource.RemoteSampleResource;
 public class RemoteSampleController {
 	public static Logger logger = Logger.getLogger(RemoteSampleController.class);
 	
-	@Autowired(remoteEndPoint="/com/cnautosoft/regionsoftsample/resources")
-	private RemoteSampleResource remoteSampleResource;
+	/*@Autowired(remoteEndPoint="/com/cnautosoft/regionsoftsample/resources")
+	private RemoteSampleResource remoteSampleResource;*/
 	
 	
 	@RequestMapping(value = "/save" ,method ={RequestMethod.POST},responseHeader= {"Content-Type == application/json;charset=UTF-8"})
