@@ -1,13 +1,13 @@
 # regionsoft
 full stack solution for websites&amp;hybird apps
 
-visit http://cnautosoft.com for more detail
+visit http://118.24.9.30/MorcbleFrontend/index.html for more detail
 
 Online introduction
-http://cnautosoft.com/core/v.html?/comp/index/introduce.html
+http://118.24.9.30/MorcbleFrontend/core/v.html?/comp/index/introduce.html
 
 Online tutorial
-http://cnautosoft.com/core/v.html?/comp/tutorial/tutorial.html
+http://118.24.9.30/MorcbleFrontend/core/v.html?/comp/tutorial/tutorial.html
 
 
 11
